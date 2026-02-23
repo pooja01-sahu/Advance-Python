@@ -1,0 +1,82 @@
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set roll_no = 106 where id = 6;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+
+| id | roll_no | Name     | Father_Name | Mother_name | class | English | Hindi | Maths | Social_science | Science |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+
+|  1 |     101 | Kriya    | Ajay        | Priya       |     5 |      20 |    38 |    67 |             56 |      76 |
+|  2 |     102 | Tanvisha | Rahul       | Pooja       |    12 |      65 |    65 |    78 |             95 |      85 |
+|  3 |     103 | Shivam   | Vishal      | Ritu        |     8 |      86 |    95 |    58 |             95 |      65 |
+|  4 |     104 | Adwik    | Pankaj      | Unknown     |     4 |      85 |    56 |    56 |             85 |      78 |
+|  5 |     105 | Poorve   | Raghav      | Sanjana     |     8 |      74 |    48 |    58 |             25 |      63 |
+|  6 |     106 | Piyush   | Hiritik     | Ritika      |     7 |      58 |    56 |    58 |             58 |      84 |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select *, (phy+chm+maths) as total from marksheet;
+ERROR 1146 (42S02): Table 'school.marksheet' doesn't exist
+mysql> select *, (English+Hindi+maths+social_science+science) as total from student;
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+
+| id | roll_no | Name     | Father_Name | Mother_name | class | English | Hindi | Maths | Social_science | Science | total |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+
+|  1 |     101 | Kriya    | Ajay        | Priya       |     5 |      20 |    38 |    67 |             56 |      76 |   257 |
+|  2 |     102 | Tanvisha | Rahul       | Pooja       |    12 |      65 |    65 |    78 |             95 |      85 |   388 |
+|  3 |     103 | Shivam   | Vishal      | Ritu        |     8 |      86 |    95 |    58 |             95 |      65 |   399 |
+|  4 |     104 | Adwik    | Pankaj      | Unknown     |     4 |      85 |    56 |    56 |             85 |      78 |   360 |
+|  5 |     105 | Poorve   | Raghav      | Sanjana     |     8 |      74 |    48 |    58 |             25 |      63 |   268 |
+|  6 |     106 | Piyush   | Hiritik     | Ritika      |     7 |      58 |    56 |    58 |             58 |      84 |   314 |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select * , (English+Hindi+maths+social_science+science) as total, ((English+Hindi+maths+social_science+science)/5) as persentage from student;
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+------------+
+| id | roll_no | Name     | Father_Name | Mother_name | class | English | Hindi | Maths | Social_science | Science | total | persentage |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+------------+
+|  1 |     101 | Kriya    | Ajay        | Priya       |     5 |      20 |    38 |    67 |             56 |      76 |   257 |    51.4000 |
+|  2 |     102 | Tanvisha | Rahul       | Pooja       |    12 |      65 |    65 |    78 |             95 |      85 |   388 |    77.6000 |
+|  3 |     103 | Shivam   | Vishal      | Ritu        |     8 |      86 |    95 |    58 |             95 |      65 |   399 |    79.8000 |
+|  4 |     104 | Adwik    | Pankaj      | Unknown     |     4 |      85 |    56 |    56 |             85 |      78 |   360 |    72.0000 |
+|  5 |     105 | Poorve   | Raghav      | Sanjana     |     8 |      74 |    48 |    58 |             25 |      63 |   268 |    53.6000 |
+|  6 |     106 | Piyush   | Hiritik     | Ritika      |     7 |      58 |    56 |    58 |             58 |      84 |   314 |    62.8000 |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * , (English+Hindi+maths+social_science+science) as total, ((English+Hindi+maths+social_science+science)/5) as persentage, if(English >= 33 and Hindi >=33,maths >= 33 , social_science >= 33, science >= 33), from student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', science >= 33), from student' at line 1
+mysql> select * , (English+Hindi+maths+social_science+science) as total, ((English+Hindi+maths+social_science+science)/5) as persentage, if(English >= 33 and Hindi >=33,maths >= 33 , social_science >= 33, science >= 33) from student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', science >= 33) from student' at line 1
+mysql> select * , (English+Hindi+maths+social_science+science) as total, ((English+Hindi+maths+social_science+science)/5) as persentage, if(English >= 33 and Hindi >=33,maths >= 33 , social_science >= 33, science >= 33 'pass' 'fail') from student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', science >= 33 'pass' 'fail') from student' at line 1
+mysql> select * , (English+Hindi+maths+social_science+science) as total, ((English+Hindi+maths+social_science+science)/5) as persentage, if(English >= 33 and Hindi >=33,maths >= 33 , social_science >= 33, science >= 33 'pass' 'fail') from student;^C
+mysql> if(English >= 33 and Hindi >=33,maths >= 33 , social_science >= 33, science >= 33 'pass' 'fail')^C
+mysql> select * , (English+Hindi+maths+social_science+science) as total, ((English+Hindi+maths+social_science+science)/5) as persentage, if(English >= 33 and Hindi >=^C,maths >= 33 , social_science >= 33, science >= 33) from student;
+mysql> select * , (English+Hindi+maths+social_science+science) as total, ((English+Hindi+maths+social_science+science)/5) as persentage, if(English >= 33 and Hindi >=33,maths >= 33 , social_science >= 33, science >= 33) from student;^C
+mysql> SELECT *,
+    ->        (English + Hindi + maths + social_science + science) AS total,
+    ->        (English + Hindi + maths + social_science + science)/5 AS percentage,
+    ->        IF(English >= 33
+    ->           AND Hindi >= 33
+    ->           AND maths >= 33
+    ->           AND social_science >= 33
+    ->           AND science >= 33,
+    ->           'pass',
+    ->           'fail') AS result
+    -> FROM student;
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+------------+--------+
+| id | roll_no | Name     | Father_Name | Mother_name | class | English | Hindi | Maths | Social_science | Science | total | percentage | result |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+------------+--------+
+|  1 |     101 | Kriya    | Ajay        | Priya       |     5 |      20 |    38 |    67 |             56 |      76 |   257 |    51.4000 | fail   |
+|  2 |     102 | Tanvisha | Rahul       | Pooja       |    12 |      65 |    65 |    78 |             95 |      85 |   388 |    77.6000 | pass   |
+|  3 |     103 | Shivam   | Vishal      | Ritu        |     8 |      86 |    95 |    58 |             95 |      65 |   399 |    79.8000 | pass   |
+|  4 |     104 | Adwik    | Pankaj      | Unknown     |     4 |      85 |    56 |    56 |             85 |      78 |   360 |    72.0000 | pass   |
+|  5 |     105 | Poorve   | Raghav      | Sanjana     |     8 |      74 |    48 |    58 |             25 |      63 |   268 |    53.6000 | fail   |
+|  6 |     106 | Piyush   | Hiritik     | Ritika      |     7 |      58 |    56 |    58 |             58 |      84 |   314 |    62.8000 | pass   |
++----+---------+----------+-------------+-------------+-------+---------+-------+-------+----------------+---------+-------+------------+--------+
+6 rows in set (0.00 sec)
+
+mysql>
