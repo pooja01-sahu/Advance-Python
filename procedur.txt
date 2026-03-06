@@ -1,0 +1,146 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 216
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| advance_python     |
+| categorymodule     |
+| company_db         |
+| hospital_db        |
+| information_schema |
+| mysql              |
+| performance_schema |
+| school             |
+| sys                |
+| user               |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use user;
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_user |
++----------------+
+| decoration     |
+| prescrption    |
+| venue          |
+| volunteer      |
++----------------+
+4 rows in set (0.00 sec)
+
+mysql> sslect * from venue;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sslect * from venue' at line 1
+mysql> select * from venue;
++---------+-------------------+-----------+----------------+
+| VenueId | VenueName         | City      | Capital        |
++---------+-------------------+-----------+----------------+
+|       1 | city Hall         | Bhopal    | Madhya-pradesh |
+|       2 | Convention Center | Indore    | Madhya-pradesh |
+|       3 | Town Auditorium   | Jaipur    | Rajasthan      |
+|       4 | Grand Palace Hall | Hyderabad | Telangana      |
+|       5 | Sports Complex    | Mumbai    | Maharashtra    |
++---------+-------------------+-----------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> DELIMITER &&
+mysql>
+mysql> CREATE PROCEDURE venueIn(IN c INT)
+    -> BEGIN
+    ->     SELECT * FROM venue WHERE venueId = c;
+    -> END &&
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> SET @input = 5;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CALL venueIn(@input);
++---------+----------------+--------+-------------+
+| VenueId | VenueName      | City   | Capital     |
++---------+----------------+--------+-------------+
+|       5 | Sports Complex | Mumbai | Maharashtra |
++---------+----------------+--------+-------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> ^C
+mysql>
+mysql> CREATE PROCEDURE venueOut(OUT vname VARCHAR(50))
+    -> BEGIN
+    ->     SELECT venueName INTO vname
+    ->     FROM venue
+    ->     WHERE venueId = 4;
+    -> END &&
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL venueOut(@output);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT @output;
++-------------------+
+| @output           |
++-------------------+
+| Grand Palace Hall |
++-------------------+
+1 row in set (0.00 sec)
+ CREATE PROCEDURE venueInOut(INOUT c VARCHAR(50))
+    -> BEGIN
+    ->     SELECT venueName INTO c
+    ->     FROM venue
+    ->     WHERE venueId = c;
+    -> END &&
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> SET @inout = 2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CALL venueInOut(@inout);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT @inout;
++-------------------+
+| @inout            |
++-------------------+
+| Convention Center |
++-------------------+
+1 row in set (0.00 sec)
+mysql> DELIMITER &&
+mysql>
+mysql> CREATE FUNCTION square(num INT)
+    -> RETURNS INT
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     DECLARE result INT;
+    ->     SET result = num * num;
+    ->     RETURN result;
+    -> END &&
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> SELECT square(10);
++------------+
+| square(10) |
++------------+
+|        100 |
++------------+
+1 row in set (0.00 sec)
